@@ -1,0 +1,471 @@
+'use client';
+
+import { useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { FaEnvelope, FaArrowRight, FaCheckCircle, FaPaperPlane } from 'react-icons/fa';
+import Image from 'next/image';
+
+export default function Newsletter() {
+  const { language } = useLanguage();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [selectedOptions, setSelectedOptions] = useState({
+    news: true,
+    events: false,
+    publications: false
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!email) {
+      setError(language === 'fr' ? 'Veuillez entrer votre adresse e-mail' : 'الرجاء إدخال عنوان بريدك الإلكتروني');
+      return;
+    }
+    
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      setError(language === 'fr' ? 'Veuillez entrer une adresse e-mail valide' : 'الرجاء إدخال عنوان بريد إلكتروني صالح');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call with timeout
+    setTimeout(() => {
+      console.log('Subscription data:', { email, preferences: selectedOptions });
+      setSubscribed(true);
+      setError('');
+      setIsSubmitting(false);
+    }, 1500);
+  };
+
+  const handleOptionChange = (option: keyof typeof selectedOptions) => {
+    setSelectedOptions(prev => ({
+      ...prev,
+      [option]: !prev[option]
+    }));
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15
+      }
+    }
+  };
+
+  return (
+    <section 
+      ref={ref} 
+      className="py-24 bg-primary relative overflow-hidden"
+      id="newsletter"
+    >
+      {/* Geometric background patterns */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Abstract shapes */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-20">
+          <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="grid-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
+              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+          </svg>
+        </div>
+        
+        {/* Animated background gradients */}
+        <motion.div 
+          className="absolute -top-40 right-10 w-96 h-96 rounded-full bg-white/10 blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1], 
+            opacity: [0.15, 0.25, 0.15],
+            x: [0, 30, 0]
+          }}
+          transition={{ 
+            duration: 15, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+        />
+        <motion.div 
+          className="absolute -bottom-20 left-20 w-80 h-80 rounded-full bg-accent/20 blur-3xl"
+          animate={{ 
+            scale: [1, 1.3, 1], 
+            opacity: [0.2, 0.3, 0.2],
+            y: [0, -20, 0]
+          }}
+          transition={{ 
+            duration: 12, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2
+          }}
+        />
+        
+        {/* Decorative elements */}
+        <motion.div 
+          className="absolute top-40 right-[15%] w-20 h-20 opacity-20"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        >
+          <svg viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="40" stroke="white" strokeWidth="2" />
+            <circle cx="50" cy="50" r="30" stroke="white" strokeWidth="2" />
+            <circle cx="50" cy="50" r="20" stroke="white" strokeWidth="2" />
+          </svg>
+        </motion.div>
+        <motion.div 
+          className="absolute bottom-40 left-[10%] w-32 h-32 opacity-10"
+          animate={{ 
+            rotate: -360,
+            y: [0, 20, 0]
+          }}
+          transition={{ 
+            rotate: { duration: 60, repeat: Infinity, ease: "linear" },
+            y: { duration: 10, repeat: Infinity, ease: "easeInOut" }
+          }}
+        >
+          <svg viewBox="0 0 100 100" fill="none">
+            <rect x="10" y="10" width="80" height="80" stroke="white" strokeWidth="2" />
+            <rect x="25" y="25" width="50" height="50" stroke="white" strokeWidth="2" />
+          </svg>
+        </motion.div>
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          className="max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <motion.div
+              variants={itemVariants}
+              className="relative inline-block w-24 h-24 mb-8"
+            >
+              <div className="absolute inset-0 bg-white/10 rounded-full backdrop-blur-md flex items-center justify-center">
+                <motion.div
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 10, 0]
+                  }}
+                  transition={{ 
+                    duration: 4, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <FaEnvelope className="text-white h-12 w-12" />
+                </motion.div>
+              </div>
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                animate={{ 
+                  boxShadow: [
+                    "0 0 0 0 rgba(255, 255, 255, 0.7)",
+                    "0 0 0 20px rgba(255, 255, 255, 0)",
+                    "0 0 0 0 rgba(255, 255, 255, 0)"
+                  ]
+                }}
+                transition={{ 
+                  duration: 2, 
+                  repeat: Infinity, 
+                  ease: "easeOut" 
+                }}
+              />
+            </motion.div>
+            
+            <motion.h2 
+              variants={itemVariants}
+              className="text-4xl sm:text-5xl font-bold text-white mb-6"
+            >
+              {language === 'fr' ? 'Restez Informé' : 'ابق على اطلاع'}
+            </motion.h2>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="text-white/90 text-xl mb-8 max-w-2xl mx-auto leading-relaxed"
+            >
+              {language === 'fr' 
+                ? 'Recevez nos derniers articles et événements directement dans votre boîte mail' 
+                : 'احصل على آخر مقالاتنا وفعالياتنا مباشرة في بريدك الإلكتروني'}
+            </motion.p>
+          </div>
+          
+          {subscribed ? (
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, type: "spring" }}
+              className="bg-white p-10 rounded-2xl shadow-xl"
+            >
+              <div className="flex flex-col items-center text-center">
+                <motion.div 
+                  className="relative w-24 h-24 mb-6"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ 
+                    type: "spring", 
+                    stiffness: 200, 
+                    delay: 0.2,
+                    duration: 0.8
+                  }}
+                >
+                  <div className="absolute inset-0 bg-primary/10 rounded-full"></div>
+                  <motion.div 
+                    className="absolute inset-2 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center"
+                    initial={{ rotate: -180, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    transition={{ delay: 0.3, duration: 0.5 }}
+                  >
+                    <FaCheckCircle className="text-white h-10 w-10" />
+                  </motion.div>
+                  <motion.div
+                    className="absolute inset-0 rounded-full"
+                    animate={{ 
+                      boxShadow: [
+                        "0 0 0 0 rgba(12, 170, 84, 0.4)",
+                        "0 0 0 20px rgba(12, 170, 84, 0)",
+                        "0 0 0 0 rgba(12, 170, 84, 0)"
+                      ]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: 3, 
+                      ease: "easeOut" 
+                    }}
+                  />
+                </motion.div>
+                
+                <motion.h3 
+                  className="text-2xl font-semibold mb-4 text-secondary"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  {language === 'fr' ? 'Merci de vous être abonné !' : 'شكرا لاشتراكك!'}
+                </motion.h3>
+                
+                <motion.p 
+                  className="text-gray-600 text-lg mb-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                >
+                  {language === 'fr' 
+                    ? 'Vous recevrez désormais des mises à jour selon vos préférences.' 
+                    : 'ستتلقى الآن تحديثات بناءً على تفضيلاتك.'}
+                </motion.p>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <button 
+                    onClick={() => setSubscribed(false)}
+                    className="text-primary hover:text-accent transition-colors font-medium"
+                  >
+                    {language === 'fr' ? 'Modifier mes préférences' : 'تعديل تفضيلاتي'}
+                  </button>
+                </motion.div>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              variants={itemVariants}
+              className="bg-white/10 backdrop-blur-xl p-10 rounded-2xl shadow-xl border border-white/20 overflow-hidden relative"
+            >
+              {/* Decorative floating elements */}
+              <motion.div 
+                className="absolute -right-8 -top-8 w-24 h-24 rounded-full bg-accent/10 blur-xl"
+                animate={{ 
+                  y: [0, 10, 0],
+                  opacity: [0.4, 0.6, 0.4]
+                }}
+                transition={{ 
+                  duration: 8, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+              />
+              
+              <div className="relative z-10">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="email" className="block text-white text-lg font-medium mb-3">
+                      {language === 'fr' ? 'Adresse E-mail' : 'عنوان البريد الإلكتروني'}
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="email"
+                        id="email"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                          setError('');
+                        }}
+                        className="w-full px-6 py-4 bg-white/20 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/30 transition-all text-white placeholder-white/50 text-lg pr-14"
+                        placeholder={language === 'fr' ? 'Votre adresse e-mail' : 'عنوان بريدك الإلكتروني'}
+                        dir={language === 'ar' ? 'rtl' : 'ltr'}
+                      />
+                      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/70">
+                        <FaEnvelope size={18} />
+                      </div>
+                    </div>
+                    {error && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-2 bg-black/20 backdrop-blur-sm p-3 rounded-lg flex items-start"
+                      >
+                        <div className="text-accent mr-2 mt-0.5">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <p className="text-white text-sm">{error}</p>
+                      </motion.div>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <p className="text-white text-lg font-medium mb-4">
+                      {language === 'fr' 
+                        ? 'Je souhaite recevoir :' 
+                        : 'أرغب في استلام:'}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {[
+                        { key: 'news', label: language === 'fr' ? 'Actualités' : 'أخبار' },
+                        { key: 'events', label: language === 'fr' ? 'Événements' : 'فعاليات' },
+                        { key: 'publications', label: language === 'fr' ? 'Publications' : 'منشورات' }
+                      ].map((option) => (
+                        <motion.div 
+                          key={option.key}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className={`
+                            relative overflow-hidden rounded-xl transition-colors duration-300 cursor-pointer
+                            ${selectedOptions[option.key as keyof typeof selectedOptions] 
+                              ? 'bg-white/30 border-2 border-white' 
+                              : 'bg-white/10 border border-white/20'
+                            }
+                          `}
+                          onClick={() => handleOptionChange(option.key as keyof typeof selectedOptions)}
+                        >
+                          <div className="p-4 flex items-center">
+                            <div className={`
+                              w-6 h-6 rounded-md flex items-center justify-center mr-3
+                              ${selectedOptions[option.key as keyof typeof selectedOptions] 
+                                ? 'bg-white' 
+                                : 'bg-white/20'
+                              }
+                            `}>
+                              {selectedOptions[option.key as keyof typeof selectedOptions] && (
+                                <motion.div
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ type: "spring", stiffness: 500, damping: 15 }}
+                                >
+                                  <FaCheckCircle className="text-primary h-4 w-4" />
+                                </motion.div>
+                              )}
+                            </div>
+                            <span className="text-white font-medium">{option.label}</span>
+                          </div>
+                          {selectedOptions[option.key as keyof typeof selectedOptions] && (
+                            <motion.div 
+                              className="absolute -right-8 -bottom-8 w-16 h-16 rounded-full bg-white/20"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          )}
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  <motion.div className="mt-8">
+                    <motion.button
+                      type="submit"
+                      disabled={isSubmitting}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`
+                        w-full bg-orange text-white font-bold py-4 px-6 rounded-xl 
+                        transition-all duration-300 shadow-lg flex items-center justify-center text-lg
+                        ${isSubmitting ? 'opacity-90' : 'hover:bg-orange-dark'}
+                      `}
+                    >
+                      {isSubmitting ? (
+                        <motion.div
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                          className="mr-2"
+                        >
+                          <svg className="w-5 h-5" viewBox="0 0 24 24">
+                            <circle 
+                              cx="12" cy="12" r="10" 
+                              stroke="currentColor" 
+                              strokeWidth="4" 
+                              fill="none" 
+                              opacity="0.2" 
+                            />
+                            <path 
+                              d="M12 2a10 10 0 0110 10" 
+                              stroke="currentColor" 
+                              strokeWidth="4" 
+                              fill="none" 
+                            />
+                          </svg>
+                        </motion.div>
+                      ) : (
+                        <FaPaperPlane className="mr-2" />
+                      )}
+                      <span>
+                        {isSubmitting 
+                          ? (language === 'fr' ? 'Envoi en cours...' : 'جاري الإرسال...') 
+                          : (language === 'fr' ? 'S\'abonner' : 'اشترك')
+                        }
+                      </span>
+                    </motion.button>
+                    
+                    <p className="text-sm text-white/70 mt-4 text-center">
+                      {language === 'fr'
+                        ? 'En vous abonnant, vous acceptez de recevoir nos emails. Vous pouvez vous désabonner à tout moment.'
+                        : 'بالاشتراك، أنت توافق على تلقي رسائلنا الإلكترونية. يمكنك إلغاء الاشتراك في أي وقت.'}
+                    </p>
+                  </motion.div>
+                </form>
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+}

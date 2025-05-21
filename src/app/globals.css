@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #2AA084;
+  --primary-dark: #228E74;
+  --accent: #2AA084;
+  --secondary: #111111;
+  --background: #ffffff;
+  --foreground: #111111;
+  --gray-light: #f8f8f8;
+  --gray: #e0e0e0;
+  --light: #F5FFF8;
+  --dark: #050505;
+  --orange: #FF8A00;
+  --orange-light: #FFAC4B;
+  --orange-dark: #E67300;
+  --foreground-rgb: 17, 17, 17;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 245, 255, 248;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #050505;
+    --foreground: #f8f8f8;
+    --gray-light: #1a1a1a;
+    --gray: #2a2a2a;
+    --light: #0d1b12;
+    --foreground-rgb: 248, 248, 248;
+    --background-start-rgb: 5, 5, 5;
+    --background-end-rgb: 13, 27, 18;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom right, rgb(var(--background-start-rgb)), rgb(var(--background-end-rgb)));
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-poppins), sans-serif;
+  font-weight: 600;
+}
+
+/* Modern Card Design */
+.card {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-green;
+}
+
+.card-dark {
+  @apply bg-secondary rounded-xl shadow-lg overflow-hidden border border-gray-800 transition-all duration-300 hover:shadow-black;
+}
+
+.card-orange {
+  @apply bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100 transition-all duration-300 hover:shadow-orange;
+}
+
+/* Enhanced Buttons */
+.btn-primary {
+  @apply bg-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-accent transition-all duration-300 shadow-sm hover:shadow-green transform hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-dark transition-all duration-300 shadow-sm hover:shadow-black transform hover:-translate-y-0.5;
+}
+
+.btn-outline {
+  @apply border-2 border-primary text-primary px-6 py-2.5 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 shadow-sm hover:shadow-green transform hover:-translate-y-0.5;
+}
+
+.btn-accent {
+  @apply bg-accent text-secondary px-6 py-2.5 rounded-lg font-semibold hover:bg-primary hover:text-white transition-all duration-300 shadow-sm hover:shadow-green transform hover:-translate-y-0.5;
+}
+
+.btn-orange {
+  @apply bg-orange text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-orange-dark transition-all duration-300 shadow-sm hover:shadow-orange transform hover:-translate-y-0.5;
+}
+
+.btn-outline-orange {
+  @apply border-2 border-orange text-orange px-6 py-2.5 rounded-lg font-semibold hover:bg-orange hover:text-white transition-all duration-300 shadow-sm hover:shadow-orange transform hover:-translate-y-0.5;
+}
+
+.btn-outline-white {
+  @apply border-2 border-white text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-white hover:text-secondary transition-all duration-300 shadow-sm transform hover:-translate-y-0.5;
+}
+
+/* Container with subtle animation */
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 transition-all duration-500;
+}
+
+/* Section Styles */
+.section {
+  @apply py-12 md:py-20 relative overflow-hidden;
+}
+
+.section-hero {
+  @apply bg-gradient-to-br from-light to-white dark:from-dark dark:to-secondary text-secondary dark:text-white py-16 md:py-24;
+}
+
+.section-colored {
+  @apply bg-gradient-to-r from-primary to-accent text-white;
+}
+
+.section-colored-orange {
+  @apply bg-gradient-to-r from-orange to-orange-light text-white;
+}
+
+.section-colored-mixed {
+  @apply bg-gradient-to-r from-primary to-orange text-white;
+}
+
+/* Modern form elements */
+.input {
+  @apply px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-30 outline-none transition-all duration-300;
+}
+
+.input-dark {
+  @apply px-4 py-2.5 rounded-lg bg-dark border border-gray-700 text-white focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-30 outline-none transition-all duration-300;
+}
+
+.input-orange {
+  @apply px-4 py-2.5 rounded-lg border border-gray-200 focus:border-orange focus:ring-2 focus:ring-orange focus:ring-opacity-30 outline-none transition-all duration-300;
+}
+
+/* Badges */
+.badge-primary {
+  @apply bg-primary/10 text-primary text-xs font-medium px-2.5 py-1 rounded-full;
+}
+
+.badge-orange {
+  @apply bg-orange/10 text-orange text-xs font-medium px-2.5 py-1 rounded-full;
+}
+
+/* RTL support */
+[dir="rtl"] .space-x-6 > * + * {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .space-x-4 > * + * {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .space-x-2 > * + * {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .ml-4 {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .ml-2 {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 shadow-lg;
+}
+
+.glass-dark {
+  @apply bg-secondary bg-opacity-50 backdrop-filter backdrop-blur-lg border border-gray-800 border-opacity-50 shadow-lg;
+}
+
+.glass-orange {
+  @apply bg-orange bg-opacity-10 backdrop-filter backdrop-blur-lg border border-orange border-opacity-20 shadow-lg;
+}
